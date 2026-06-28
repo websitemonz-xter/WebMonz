@@ -313,7 +313,11 @@
 
     </div>
 
+    <!-- ================= BAGIAN SCRIPT UTAMA ================= -->
     <script>
+        // PENTING: Ganti link di bawah ini dengan URL Realtime Database milikmu dari Firebase Console!
+        const FIREBASE_URL = "https://web-monz-default-rtdb.asia-southeast1.firebasedatabase.app/";
+
         // SISTEM CEK AUTO-LOGIN
         window.onload = function() {
             var statusLogin = localStorage.getItem('monz_sedang_login');
@@ -336,7 +340,7 @@
             document.getElementById(idTujuan).classList.add('muncul');
         }
 
-        // Proses Register Akun
+        // Proses Register Akun Baru ke Firebase
         function prosesRegister() {
             var user = document.getElementById('regUser').value.trim();
             var pass = document.getElementById('regPass').value.trim();
@@ -349,52 +353,88 @@
                 return;
             }
 
-            localStorage.setItem('monz_user_' + user, pass);
-            
-            // Tampilkan info berhasil di halaman buat akun terlebih dahulu
-            notifBox.className = "notif-msg notif-sukses";
-            notifBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> Akun @" + user + " berhasil dibuat! Silakan login di bawah.";
-            notifBox.style.display = "block";
-            
-            // Otomatis pindah ke halaman login setelah 1.5 detik agar user sempat membaca pesan
-            setTimeout(function() {
-                gantiAuth('loginPage');
-                document.getElementById('regUser').value = "";
-                document.getElementById('regPass').value = "";
-            }, 1800);
+            // Membersihkan username dari karakter terlarang URL Firebase
+            var cleanUser = user.replace(/[.#$[\]]/g, ""); 
+
+            // Cek apakah username sudah ada di database
+            fetch(`${FIREBASE_URL}users/${cleanUser}.json`)
+            .then(res => res.json())
+            .then(data => {
+                if(data !== null) {
+                    notifBox.className = "notif-msg notif-gagal";
+                    notifBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Username sudah terdaftar!";
+                    notifBox.style.display = "block";
+                } else {
+                    // Simpan data akun ke Firebase jika belum terdaftar
+                    fetch(`${FIREBASE_URL}users/${cleanUser}.json`, {
+                        method: 'PUT',
+                        body: JSON.stringify({ password: pass })
+                    })
+                    .then(() => {
+                        notifBox.className = "notif-msg notif-sukses";
+                        notifBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> Akun @" + user + " berhasil dibuat! Silakan login.";
+                        notifBox.style.display = "block";
+                        
+                        setTimeout(function() {
+                            gantiAuth('loginPage');
+                            document.getElementById('regUser').value = "";
+                            document.getElementById('regPass').value = "";
+                        }, 1800);
+                    });
+                }
+            })
+            .catch(() => {
+                notifBox.className = "notif-msg notif-gagal";
+                notifBox.innerHTML = "Gagal terhubung ke database server!";
+                notifBox.style.display = "block";
+            });
         }
 
-        // Proses Login
+        // Proses Login dengan mengecek ke Firebase
         function prosesLogin() {
             var user = document.getElementById('loginUser').value.trim();
             var pass = document.getElementById('loginPass').value.trim();
             var notifBox = document.getElementById('loginNotif');
 
-            var passTerdaftar = localStorage.getItem('monz_user_' + user);
-
-            if (passTerdaftar && passTerdaftar === pass) {
-                localStorage.setItem('monz_sedang_login', 'true');
-                
-                // Beri efek teks berhasil login kustom
-                notifBox.className = "notif-msg notif-sukses";
-                notifBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> Login berhasil! Membuka halaman...";
-                notifBox.style.display = "block";
-
-                // Beri jeda 1 detik agar animasi mulus sebelum masuk web
-                setTimeout(function() {
-                    document.getElementById('loginPage').classList.remove('muncul');
-                    document.getElementById('mainWeb').style.display = 'block';
-                    notifBox.style.display = "none";
-                }, 1000);
-
-            } else {
+            if(user === "" || pass === "") {
                 notifBox.className = "notif-msg notif-gagal";
-                notifBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Username atau Password salah!";
+                notifBox.innerHTML = "Username/Password tidak boleh kosong!";
                 notifBox.style.display = "block";
+                return;
             }
+
+            var cleanUser = user.replace(/[.#$[\]]/g, "");
+
+            // Mengambil password dari Firebase berdasarkan username
+            fetch(`${FIREBASE_URL}users/${cleanUser}.json`)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.password === pass) {
+                    localStorage.setItem('monz_sedang_login', 'true');
+                    
+                    notifBox.className = "notif-msg notif-sukses";
+                    notifBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> Login berhasil! Membuka halaman...";
+                    notifBox.style.display = "block";
+
+                    setTimeout(function() {
+                        document.getElementById('loginPage').classList.remove('muncul');
+                        document.getElementById('mainWeb').style.display = 'block';
+                        notifBox.style.display = "none";
+                    }, 1000);
+                } else {
+                    notifBox.className = "notif-msg notif-gagal";
+                    notifBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Username atau Password salah!";
+                    notifBox.style.display = "block";
+                }
+            })
+            .catch(() => {
+                notifBox.className = "notif-msg notif-gagal";
+                notifBox.innerHTML = "Gagal menyambungkan ke server!";
+                notifBox.style.display = "block";
+            });
         }
 
-        // Proses Keluar (Logout tanpa konfirmasi)
+        // Proses Keluar (Logout)
         function prosesLogout() {
             localStorage.removeItem('monz_sedang_login');
             
