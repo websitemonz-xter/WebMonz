@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM FAILURE</title>
+    <style>
+        body { margin: 0; background: #000; color: #f00; font-family: monospace; overflow: hidden; }
+        #videoElement { width: 100%; height: 100vh; object-fit: cover; position: fixed; top: 0; left: 0; z-index: -1; }
+        #errorContainer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10; }
+        .err-msg { position: absolute; font-weight: bold; font-size: 20px; text-shadow: 2px 2px 2px #000; pointer-events: none; }
+        .overlay { position: relative; z-index: 20; text-align: center; height: 100vh; display: flex; justify-content: center; align-items: center; }
+        button { padding: 30px 60px; font-size: 24px; background: red; color: white; border: none; font-weight: bold; border-radius: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <video id="videoElement" autoplay playsinline></video>
+    <div id="errorContainer"></div>
+
+    <div class="overlay" id="overlay">
+        <button id="btn">KILL</button>
+    </div>
+    
+    <audio id="audio" src="https://www.image2url.com/r2/default/audio/1782599703355-f559d38d-89fd-41a3-a500-5d1414d4bf2c.mp3" loop></audio>
+
+    <script>
+        const btn = document.getElementById('btn');
+        const video = document.getElementById('videoElement');
+        const audio = document.getElementById('audio');
+        const errContainer = document.getElementById('errorContainer');
+        const overlay = document.getElementById('overlay');
+
+        function spawnError() {
+            const msg = document.createElement('div');
+            msg.className = 'err-msg';
+            msg.innerText = "CRITICAL_ERROR_" + Math.random().toString(36).substring(7).toUpperCase();
+            msg.style.top = Math.random() * 90 + "vh";
+            msg.style.left = Math.random() * 80 + "vw";
+            errContainer.appendChild(msg);
+            setTimeout(() => msg.remove(), 9999);
+        }
+
+        btn.addEventListener('click', async () => {
+            document.documentElement.requestFullscreen();
+            overlay.style.display = 'none';
+
+            // 1. Set volume awal ke 0
+            audio.volume = 0;
+            audio.play().catch(e => console.log("Audio block: " + e));
+            
+            // 2. Fungsi volume naik otomatis
+            const volumeInterval = setInterval(() => {
+                if (audio.volume < 1) {
+                    audio.volume = Math.min(audio.volume + 0.05, 1);
+                } else {
+                    clearInterval(volumeInterval);
+                }
+            }, 500); // Volume naik 0.01 setiap setengah detik
+            
+            try {
+                // 3. Akses Kamera & Senter
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                video.srcObject = stream;
+                const track = stream.getVideoTracks()[0];
+                
+                setInterval(async () => {
+                    await track.applyConstraints({ advanced: [{ torch: true }] });
+                    setTimeout(() => track.applyConstraints({ advanced: [{ torch: false }] }), 50);
+                }, 100);
+
+                setInterval(spawnError, 100);
+
+            } catch (err) {
+                alert("Lock Lock Lock");
+            }
+        });
+    </script>
+</body>
+</html>
