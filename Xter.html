@@ -3,51 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Web Monz - Full & Anti-Zoom</title>
+    <title>Web Monz - Login Only</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-
-        html {
-            height: -webkit-fill-available;
-        }
-
+        html { height: -webkit-fill-available; }
         body { 
             background: url('https://cdn.phototourl.com/free/2026-06-27-6a6abf78-5e7c-4da4-a543-6cddb9e4706a.jpg') no-repeat center center fixed;
             background-size: cover;
-            min-height: 100vh; 
-            min-height: -webkit-fill-available;
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            color: white;
-            padding: 40px 0;
-            -webkit-text-size-adjust: 100%;
-            touch-action: manipulation;
+            min-height: 100vh; min-height: -webkit-fill-available;
+            display: flex; justify-content: center; align-items: center; 
+            color: white; padding: 40px 0;
+            -webkit-text-size-adjust: 100%; touch-action: manipulation;
         }
-
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
-        }
-
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1; }
         .container {
-            width: 90%; max-width: 400px;
-            padding: 25px;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 90%; max-width: 400px; padding: 25px; text-align: center;
+            position: relative; z-index: 2; background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
-        /* Gaya Form Login & Buat Akun */
         .auth-box h3 { margin-bottom: 15px; font-weight: 600; font-size: 20px; }
         .input-group { position: relative; margin-bottom: 15px; text-align: left; }
         .input-group i { position: absolute; left: 15px; top: 15px; color: rgba(255,255,255,0.6); }
@@ -57,116 +34,25 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px; color: white; outline: none; font-size: 14px;
         }
-        .input-group input::placeholder { color: rgba(255,255,255,0.5); }
         .auth-btn {
             width: 100%; padding: 12px; background: #1abc9c; border: none;
             border-radius: 12px; color: white; font-weight: 600; font-size: 15px;
-            cursor: pointer; transition: 0.3s; margin-top: 5px;
+            cursor: pointer; transition: 0.3s;
         }
         .auth-btn:hover { background: #16a085; }
-        .switch-auth { font-size: 13px; margin-top: 15px; color: rgba(255,255,255,0.7); }
-        .switch-auth span { color: #1abc9c; cursor: pointer; font-weight: 600; }
-
-        /* Gaya Pesan Notifikasi Sukses/Gagal */
-        .notif-msg {
-            font-size: 13px;
-            margin-top: 12px;
-            padding: 8px;
-            border-radius: 8px;
-            display: none;
-            font-weight: 400;
-        }
-        .notif-sukses { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
+        .notif-msg { font-size: 13px; margin-top: 12px; padding: 8px; border-radius: 8px; display: none; }
         .notif-gagal { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); }
+        .notif-sukses { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
 
-        /* Navigasi Menu Utama & Atas */
-        .header-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 10px;
-        }
-
-        .nav-menu button {
-            color: white;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .nav-menu button.aktif {
-            background: #1abc9c;
-            border-color: #1abc9c;
-            font-weight: 600;
-        }
-
-        .nav-menu button:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Tombol Logout Pojok Kanan Atas */
-        .logout-top-btn {
-            width: 38px;
-            height: 38px;
-            background: rgba(231, 76, 60, 0.2);
-            border: 1px solid rgba(231, 76, 60, 0.4);
-            border-radius: 10px;
-            color: #ff7675;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 16px;
-        }
-
-        .logout-top-btn:hover {
-            background: #e74c3c;
-            color: white;
-            border-color: #e74c3c;
-        }
-
-        .logo-top {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            margin-bottom: 15px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-        }
-
-        .isi-menu, .auth-box {
-            display: none;
-        }
-
-        .muncul {
-            display: block;
-        }
-
-        .option-btn {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px; margin-bottom: 15px;
-            border-radius: 15px;
-            display: flex; align-items: center; gap: 15px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none; color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .option-btn:last-of-type { margin-bottom: 0; }
-        .option-btn:hover { background: rgba(255, 255, 255, 0.2); }
+        .header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .nav-menu { display: flex; gap: 10px; }
+        .nav-menu button { color: white; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 16px; border-radius: 10px; font-size: 14px; cursor: pointer; }
+        .nav-menu button.aktif { background: #1abc9c; border-color: #1abc9c; font-weight: 600; }
+        .logout-top-btn { width: 38px; height: 38px; background: rgba(231, 76, 60, 0.2); border: 1px solid rgba(231, 76, 60, 0.4); border-radius: 10px; color: #ff7675; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .logo-top { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.4); margin-bottom: 15px; }
+        .isi-menu { display: none; }
+        .muncul { display: block; }
+        .option-btn { background: rgba(255, 255, 255, 0.1); padding: 15px; margin-bottom: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; border: 1px solid rgba(255, 255, 255, 0.2); }
         .icon { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 20px; flex-shrink: 0; }
     </style>
 </head>
@@ -175,7 +61,6 @@
     <div class="overlay"></div>
 
     <div class="container">
-
         <!-- ================= HALAMAN LOGIN ================= -->
         <div id="loginPage" class="auth-box">
             <img src="https://cdn.phototourl.com/free/2026-06-27-adaed56d-30ce-42e0-b035-1512a456bb6b.jpg" alt="Logo" class="logo-top">
@@ -189,208 +74,67 @@
                 <input type="password" id="loginPass" placeholder="Password">
             </div>
             <button class="auth-btn" onclick="prosesLogin()">Masuk</button>
-            
-            <!-- Tempat Notifikasi Login -->
             <div id="loginNotif" class="notif-msg"></div>
-
-            <p class="switch-auth">Belum punya akun? <span onclick="gantiAuth('registerPage')">Buat Akun</span></p>
-        </div>
-
-        <!-- ================= HALAMAN BUAT AKUN ================= -->
-        <div id="registerPage" class="auth-box">
-            <img src="https://cdn.phototourl.com/free/2026-06-27-adaed56d-30ce-42e0-b035-1512a456bb6b.jpg" alt="Logo" class="logo-top">
-            <h3>Buat Akun Baru</h3>
-            <div class="input-group">
-                <i class="fa-solid fa-user"></i>
-                <input type="text" id="regUser" placeholder="Buat Username">
-            </div>
-            <div class="input-group">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="regPass" placeholder="Buat Password">
-            </div>
-            <button class="auth-btn" onclick="prosesRegister()">Daftar</button>
-            
-            <!-- Tempat Notifikasi Daftar Akun -->
-            <div id="regNotif" class="notif-msg"></div>
-
-            <p class="switch-auth">Sudah punya akun? <span onclick="gantiAuth('loginPage')">Login</span></p>
         </div>
 
         <!-- ================= HALAMAN UTAMA ================= -->
         <div id="mainWeb" style="display: none;">
-            
-            <!-- Header Navigasi Atas -->
             <div class="header-nav">
                 <div class="nav-menu">
                     <button id="btn1" class="aktif" onclick="pindahMenu('menu1', 'btn1')">Menu 1</button>
                     <button id="btn2" onclick="pindahMenu('menu2', 'btn2')">Menu 2</button>
                 </div>
-                <!-- Tombol Logout Kanan Atas -->
-                <div class="logout-top-btn" title="Keluar Akun" onclick="prosesLogout()">
+                <div class="logout-top-btn" onclick="prosesLogout()">
                     <i class="fa-solid fa-right-from-bracket"></i>
                 </div>
             </div>
 
-            <!-- Logo Atas -->
-            <img src="https://cdn.phototourl.com/free/2026-06-27-adaed56d-30ce-42e0-b035-1512a456bb6b.jpg" alt="Logo Monz" class="logo-top">
+            <img src="https://cdn.phototourl.com/free/2026-06-27-adaed56d-30ce-42e0-b035-1512a456bb6b.jpg" alt="Logo" class="logo-top">
 
-            <!-- ================= KONTEN MENU 1 ================= -->
             <div id="menu1" class="isi-menu muncul">
                 <h2 style="margin-bottom: 5px;">Selamat datang di Web Monz</h2>
-                
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <p style="font-size: 13px; color: rgba(255, 255, 255, 0.7); font-weight: 300;">
-                        Silakan pilih salah satu opsi di bawah ini
-                    </p>
-                </div>
-
-                <!-- Tombol Grup -->
                 <a href="https://chat.whatsapp.com/LuFfC6RKvUj25azyploexs" class="option-btn">
                     <div class="icon" style="background: #25D366;"><i class="fa-brands fa-whatsapp"></i></div>
-                    <div style="text-align: left;">
-                        <h4 style="font-size: 16px;">Grup</h4>
-                        <p style="font-size: 12px; opacity: 0.8;">Link Grup Bot WhatsApp</p>
-                    </div>
+                    <div style="text-align: left;"><h4>Grup</h4><p style="font-size: 12px; opacity: 0.8;">Link Grup Bot WhatsApp</p></div>
                 </a>
-
-                <!-- Tombol Owner -->
                 <a href="https://wa.me/6285199619115" class="option-btn">
                     <div class="icon" style="background: #00b4d8;"><i class="fa-solid fa-user-shield"></i></div>
-                    <div style="text-align: left;">
-                        <h4 style="font-size: 16px;">Owner</h4>
-                        <p style="font-size: 12px; opacity: 0.8;">Hubungi nomor Owner</p>
-                    </div>
+                    <div style="text-align: left;"><h4>Owner</h4><p style="font-size: 12px; opacity: 0.8;">Hubungi nomor Owner</p></div>
                 </a>
-
-                <!-- Tombol TikTok -->
                 <a href="https://www.tiktok.com/@monzz_2013?_r=1&_t=ZS-97a2g9c4s2X" class="option-btn">
                     <div class="icon" style="background: #010101; border: 1px solid rgba(255,255,255,0.3);"><i class="fa-brands fa-tiktok"></i></div>
-                    <div style="text-align: left;">
-                        <h4 style="font-size: 16px;">TikTok</h4>
-                        <p style="font-size: 12px; opacity: 0.8;">Kunjungi akun Tiktok</p>
-                    </div>
+                    <div style="text-align: left;"><h4>TikTok</h4><p style="font-size: 12px; opacity: 0.8;">Kunjungi akun Tiktok</p></div>
                 </a>
             </div>
 
-            <!-- ================= KONTEN MENU 2 ================= -->
             <div id="menu2" class="isi-menu">
-                <h2 style="margin-bottom: 5px;">Download & Tutorial </h2>
-                
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <p style="font-size: 13px; color: rgba(255, 255, 255, 0.7); font-weight: 300;">
-                        Silakan download file script dan video tutorial di bawah
-                    </p>
-                </div>
-
-                <!-- Tombol SC NYA -->
+                <h2 style="margin-bottom: 5px;">Download & Tutorial</h2>
                 <a href="https://github.com/nazedev/hitori" class="option-btn">
                     <div class="icon" style="background: #24292e;"><i class="fa-brands fa-github"></i></div>
-                    <div style="text-align: left;">
-                        <h4 style="font-size: 16px;">SC NYA</h4>
-                        <p style="font-size: 12px; opacity: 0.8;">DOWNLOAD SC</p>
-                    </div>
+                    <div style="text-align: left;"><h4>SC NYA</h4><p style="font-size: 12px; opacity: 0.8;">DOWNLOAD SC</p></div>
                 </a>
-
-                <!-- Tombol Video -->
                 <a href="https://youtu.be/9FAcmYG9sbk?si=GkM_wYusI2Vs7vwG" class="option-btn">
                     <div class="icon" style="background: #FF0000;"><i class="fa-solid fa-play"></i></div>
-                    <div style="text-align: left;">
-                        <h4 style="font-size: 16px;">Video</h4>
-                        <p style="font-size: 12px; opacity: 0.8;">Video tutorial</p>
-                    </div>
+                    <div style="text-align: left;"><h4>Video</h4><p style="font-size: 12px; opacity: 0.8;">Video tutorial</p></div>
                 </a>
-
-                <!-- Tombol Menu Bug -->
                 <a href="https://websitemonz-xter.github.io/Menu-Bug/BugMenu" class="option-btn">
                     <div class="icon" style="background: #00ff66; color: #000000;"><i class="fa-solid fa-user-secret"></i></div>
-                    <div style="text-align: left;">
-                        <h4 style="font-size: 16px;">Menu Bug</h4>
-                        <p style="font-size: 12px; opacity: 0.8;">Lihat list atau sistem bug</p>
-                    </div>
+                    <div style="text-align: left;"><h4>Menu Bug</h4><p style="font-size: 12px; opacity: 0.8;">Lihat list atau sistem bug</p></div>
                 </a>
             </div>
         </div>
-
     </div>
 
-    <!-- ================= BAGIAN SCRIPT UTAMA ================= -->
     <script>
-        // PENTING: Ganti link di bawah ini dengan URL Realtime Database milikmu dari Firebase Console!
         const FIREBASE_URL = "https://web-monz-default-rtdb.asia-southeast1.firebasedatabase.app/";
 
-        // SISTEM CEK AUTO-LOGIN
         window.onload = function() {
-            var statusLogin = localStorage.getItem('monz_sedang_login');
-            if (statusLogin === 'true') {
+            if (localStorage.getItem('monz_sedang_login') === 'true') {
+                document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('mainWeb').style.display = 'block';
-            } else {
-                document.getElementById('loginPage').classList.add('muncul');
             }
         };
 
-        // Bersihkan pesan notifikasi saat pindah halaman form
-        function gantiAuth(idTujuan) {
-            document.getElementById('loginNotif').style.display = 'none';
-            document.getElementById('regNotif').style.display = 'none';
-            
-            var semuaAuth = document.getElementsByClassName('auth-box');
-            for (var i = 0; i < semuaAuth.length; i++) {
-                semuaAuth[i].classList.remove('muncul');
-            }
-            document.getElementById(idTujuan).classList.add('muncul');
-        }
-
-        // Proses Register Akun Baru ke Firebase
-        function prosesRegister() {
-            var user = document.getElementById('regUser').value.trim();
-            var pass = document.getElementById('regPass').value.trim();
-            var notifBox = document.getElementById('regNotif');
-
-            if(user === "" || pass === "") {
-                notifBox.className = "notif-msg notif-gagal";
-                notifBox.innerHTML = "<i class='fa-solid fa-circle-exclamation'></i> Username/Password kosong!";
-                notifBox.style.display = "block";
-                return;
-            }
-
-            // Membersihkan username dari karakter terlarang URL Firebase
-            var cleanUser = user.replace(/[.#$[\]]/g, ""); 
-
-            // Cek apakah username sudah ada di database
-            fetch(`${FIREBASE_URL}users/${cleanUser}.json`)
-            .then(res => res.json())
-            .then(data => {
-                if(data !== null) {
-                    notifBox.className = "notif-msg notif-gagal";
-                    notifBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Username sudah terdaftar!";
-                    notifBox.style.display = "block";
-                } else {
-                    // Simpan data akun ke Firebase jika belum terdaftar
-                    fetch(`${FIREBASE_URL}users/${cleanUser}.json`, {
-                        method: 'PUT',
-                        body: JSON.stringify({ password: pass })
-                    })
-                    .then(() => {
-                        notifBox.className = "notif-msg notif-sukses";
-                        notifBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> Akun @" + user + " berhasil dibuat! Silakan login.";
-                        notifBox.style.display = "block";
-                        
-                        setTimeout(function() {
-                            gantiAuth('loginPage');
-                            document.getElementById('regUser').value = "";
-                            document.getElementById('regPass').value = "";
-                        }, 1800);
-                    });
-                }
-            })
-            .catch(() => {
-                notifBox.className = "notif-msg notif-gagal";
-                notifBox.innerHTML = "Gagal terhubung ke database server!";
-                notifBox.style.display = "block";
-            });
-        }
-
-        // Proses Login dengan mengecek ke Firebase
         function prosesLogin() {
             var user = document.getElementById('loginUser').value.trim();
             var pass = document.getElementById('loginPass').value.trim();
@@ -405,25 +149,15 @@
 
             var cleanUser = user.replace(/[.#$[\]]/g, "");
 
-            // Mengambil password dari Firebase berdasarkan username
             fetch(`${FIREBASE_URL}users/${cleanUser}.json`)
             .then(res => res.json())
             .then(data => {
                 if (data && data.password === pass) {
                     localStorage.setItem('monz_sedang_login', 'true');
-                    
-                    notifBox.className = "notif-msg notif-sukses";
-                    notifBox.innerHTML = "<i class='fa-solid fa-circle-check'></i> Login berhasil! Membuka halaman...";
-                    notifBox.style.display = "block";
-
-                    setTimeout(function() {
-                        document.getElementById('loginPage').classList.remove('muncul');
-                        document.getElementById('mainWeb').style.display = 'block';
-                        notifBox.style.display = "none";
-                    }, 1000);
+                    location.reload();
                 } else {
                     notifBox.className = "notif-msg notif-gagal";
-                    notifBox.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Username atau Password salah!";
+                    notifBox.innerHTML = "Username atau Password salah!";
                     notifBox.style.display = "block";
                 }
             })
@@ -434,29 +168,15 @@
             });
         }
 
-        // Proses Keluar (Logout)
         function prosesLogout() {
             localStorage.removeItem('monz_sedang_login');
-            
-            document.getElementById('mainWeb').style.display = 'none';
-            gantiAuth('loginPage');
-            
-            document.getElementById('loginUser').value = "";
-            document.getElementById('loginPass').value = "";
+            location.reload();
         }
 
-        // Perpindahan Menu Dalam Aplikasi
         function pindahMenu(menuId, btnId) {
-            var semuaKonten = document.getElementsByClassName('isi-menu');
-            for (var i = 0; i < semuaKonten.length; i++) {
-                semuaKonten[i].classList.remove('muncul');
-            }
+            document.querySelectorAll('.isi-menu').forEach(el => el.classList.remove('muncul'));
             document.getElementById(menuId).classList.add('muncul');
-
-            var semuaTombol = document.querySelectorAll('.nav-menu button');
-            for (var j = 0; j < semuaTombol.length; j++) {
-                semuaTombol[j].classList.remove('aktif');
-            }
+            document.querySelectorAll('.nav-menu button').forEach(el => el.classList.remove('aktif'));
             document.getElementById(btnId).classList.add('aktif');
         }
     </script>
