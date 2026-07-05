@@ -3,181 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Web Monz - Login Only</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>XR KRITIS Panel</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        html { height: -webkit-fill-available; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
         body { 
-            background: url('https://cdn.phototourl.com/free/2026-06-27-6a6abf78-5e7c-4da4-a543-6cddb9e4706a.jpg') no-repeat center center fixed;
+            background-image: url('https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=1920'); 
             background-size: cover;
-            min-height: 100vh; min-height: -webkit-fill-available;
-            display: flex; justify-content: center; align-items: center; 
-            color: white; padding: 40px 0;
-            -webkit-text-size-adjust: 100%; touch-action: manipulation;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            color: #fff; 
         }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1; }
-        .container {
-            width: 90%; max-width: 400px; padding: 25px; text-align: center;
-            position: relative; z-index: 2; background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .auth-box h3 { margin-bottom: 15px; font-weight: 600; font-size: 20px; }
-        .input-group { position: relative; margin-bottom: 15px; text-align: left; }
-        .input-group i { position: absolute; left: 15px; top: 15px; color: rgba(255,255,255,0.6); }
-        .input-group input {
-            width: 100%; padding: 12px 12px 12px 45px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px; color: white; outline: none; font-size: 14px;
-        }
-        .auth-btn {
-            width: 100%; padding: 12px; background: #1abc9c; border: none;
-            border-radius: 12px; color: white; font-weight: 600; font-size: 15px;
-            cursor: pointer; transition: 0.3s;
-        }
-        .auth-btn:hover { background: #16a085; }
-        .notif-msg { font-size: 13px; margin-top: 12px; padding: 8px; border-radius: 8px; display: none; }
-        .notif-gagal { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); }
-        .notif-sukses { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
 
-        .header-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .nav-menu { display: flex; gap: 10px; }
-        .nav-menu button { color: white; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 16px; border-radius: 10px; font-size: 14px; cursor: pointer; }
-        .nav-menu button.aktif { background: #1abc9c; border-color: #1abc9c; font-weight: 600; }
-        .logout-top-btn { width: 38px; height: 38px; background: rgba(231, 76, 60, 0.2); border: 1px solid rgba(231, 76, 60, 0.4); border-radius: 10px; color: #ff7675; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .logo-top { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.4); margin-bottom: 15px; }
-        .isi-menu { display: none; }
-        .muncul { display: block; }
-        .option-btn { background: rgba(255, 255, 255, 0.1); padding: 15px; margin-bottom: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; border: 1px solid rgba(255, 255, 255, 0.2); }
-        .icon { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 20px; flex-shrink: 0; }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); 
+            z-index: -1;
+        }
+
+        .panel-card { 
+            width: 90%; 
+            max-width: 380px; 
+            padding: 40px 25px; 
+            border-radius: 30px; 
+            text-align: center; 
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* TEMA 1: HALAMAN UTAMA (Main Theme) */
+        .panel-main-active {
+            background-color: rgba(20, 20, 25, 0.9);
+            border: 1px solid #444;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        /* TEMA 2: PANEL MENU (Panel Theme) */
+        .panel-menu-active {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid #00c6ff;
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.3);
+        }
+
+        .lock-icon { font-size: 50px; color: #26c6da; margin-bottom: 10px; }
+        h1 { font-size: 24px; letter-spacing: 2px; margin-bottom: 5px; text-transform: uppercase; }
+        .subtitle { font-size: 12px; color: #888; margin-bottom: 30px; letter-spacing: 3px; text-transform: uppercase; }
+
+        .btn { display: block; width: 100%; padding: 15px; margin: 12px 0; border-radius: 50px; text-decoration: none; color: white; font-weight: 600; border: none; cursor: pointer; transition: transform 0.2s; font-size: 16px; text-align: center; }
+        .btn:active { transform: scale(0.98); }
+        .btn-panel { background: linear-gradient(90deg, #00c6ff, #0072ff); margin-top: 20px; }
+        .btn-download { background: linear-gradient(90deg, #28a745, #20c997); }
+
+        .divider { margin: 25px 0; font-size: 10px; color: #444; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+        .divider::before, .divider::after { content: ""; height: 1px; flex: 1; background: #333; }
+
+        input[type="password"] { width: 100%; padding: 15px; margin: 10px 0; border-radius: 50px; border: 1px solid #333; background: #1a1a1f; color: white; text-align: center; font-size: 16px; }
+        .error-text { color: #ff4d4d; font-size: 12px; margin-top: 10px; display: none; }
+        
+        .hidden { display: none; }
     </style>
 </head>
-<body>
+<body onload="document.getElementById('card').classList.add('panel-main-active')">
 
-    <div class="overlay"></div>
+    <div class="panel-card" id="card">
+        <div class="lock-icon">🌐</div>
+        <h1>Proxy Monz</h1>
+        <p class="subtitle" id="subtitle-text">PANEL PROXY</p>
 
-    <div class="container">
-        <!-- ================= HALAMAN LOGIN ================= -->
-        <div id="loginPage" class="auth-box">
-            <img src="https://cdn.phototourl.com/free/2026-06-27-adaed56d-30ce-42e0-b035-1512a456bb6b.jpg" alt="Logo" class="logo-top">
-            <h3>Login ke Web Monz</h3>
-            <div class="input-group">
-                <i class="fa-solid fa-user"></i>
-                <input type="text" id="loginUser" placeholder="Username">
-            </div>
-            <div class="input-group">
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" id="loginPass" placeholder="Password">
-            </div>
-            <button class="auth-btn" onclick="prosesLogin()">Masuk</button>
-            <div id="loginNotif" class="notif-msg"></div>
+        <div id="main-view">
+            <button class="btn btn-panel" onclick="showLogin()">> Download PANEL Proxy</button>
         </div>
 
-        <!-- ================= HALAMAN UTAMA ================= -->
-        <div id="mainWeb" style="display: none;">
-            <div class="header-nav">
-                <div class="nav-menu">
-                    <button id="btn1" class="aktif" onclick="pindahMenu('menu1', 'btn1')">Menu 1</button>
-                    <button id="btn2" onclick="pindahMenu('menu2', 'btn2')">Menu 2</button>
-                </div>
-                <div class="logout-top-btn" onclick="prosesLogout()">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                </div>
-            </div>
+        <div id="login-view" class="hidden">
+            <input type="password" id="password-input" placeholder="Masukkan Password">
+            <button class="btn btn-panel" onclick="verifyPassword()">MASUK</button>
+            <p id="error-msg" class="error-text">Password salah!</p>
+        </div>
 
-            <img src="https://cdn.phototourl.com/free/2026-06-27-adaed56d-30ce-42e0-b035-1512a456bb6b.jpg" alt="Logo" class="logo-top">
-
-            <div id="menu1" class="isi-menu muncul">
-                <h2 style="margin-bottom: 5px;">Selamat datang di Web Monz</h2>
-                <a href="https://chat.whatsapp.com/LuFfC6RKvUj25azyploexs" class="option-btn">
-                    <div class="icon" style="background: #25D366;"><i class="fa-brands fa-whatsapp"></i></div>
-                    <div style="text-align: left;"><h4>Grup</h4><p style="font-size: 12px; opacity: 0.8;">Link Grup Bot WhatsApp</p></div>
-                </a>
-                <a href="https://wa.me/6285199619115" class="option-btn">
-                    <div class="icon" style="background: #00b4d8;"><i class="fa-solid fa-user-shield"></i></div>
-                    <div style="text-align: left;"><h4>Owner</h4><p style="font-size: 12px; opacity: 0.8;">Hubungi nomor Owner</p></div>
-                </a>
-                <a href="https://www.tiktok.com/@monzz_2013?_r=1&_t=ZS-97a2g9c4s2X" class="option-btn">
-                    <div class="icon" style="background: #010101; border: 1px solid rgba(255,255,255,0.3);"><i class="fa-brands fa-tiktok"></i></div>
-                    <div style="text-align: left;"><h4>TikTok</h4><p style="font-size: 12px; opacity: 0.8;">Kunjungi akun Tiktok</p></div>
-                </a>
-            </div>
-
-            <div id="menu2" class="isi-menu">
-                <h2 style="margin-bottom: 5px;">Download & Tutorial</h2>
-                <a href="https://github.com/nazedev/hitori" class="option-btn">
-                    <div class="icon" style="background: #24292e;"><i class="fa-brands fa-github"></i></div>
-                    <div style="text-align: left;"><h4>SC NYA</h4><p style="font-size: 12px; opacity: 0.8;">DOWNLOAD SC</p></div>
-                </a>
-                <a href="https://youtu.be/9FAcmYG9sbk?si=GkM_wYusI2Vs7vwG" class="option-btn">
-                    <div class="icon" style="background: #FF0000;"><i class="fa-solid fa-play"></i></div>
-                    <div style="text-align: left;"><h4>Video</h4><p style="font-size: 12px; opacity: 0.8;">Video tutorial</p></div>
-                </a>
-                <a href="https://websitemonz-xter.github.io/Menu-Bug/BugMenu" class="option-btn">
-                    <div class="icon" style="background: #00ff66; color: #000000;"><i class="fa-solid fa-user-secret"></i></div>
-                    <div style="text-align: left;"><h4>Menu Bug</h4><p style="font-size: 12px; opacity: 0.8;">Lihat list atau sistem bug</p></div>
-                </a>
-            </div>
+        <div id="panel-view" class="hidden">
+            <div class="divider">Menu Proxy</div>
+            <a href="https://www.mediafire.com/file/6r89attjkb7lfai/Monz_Proxy.zip/file" target="_blank" class="btn btn-download"> Download Proxy Monz</a>
+            <button class="btn" style="background-color: #333;" onclick="location.reload()">KEMBALI</button>
         </div>
     </div>
 
     <script>
-        const FIREBASE_URL = "https://web-monz-default-rtdb.asia-southeast1.firebasedatabase.app/";
-
-        window.onload = function() {
-            if (localStorage.getItem('monz_sedang_login') === 'true') {
-                document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('mainWeb').style.display = 'block';
-            }
-        };
-
-        function prosesLogin() {
-            var user = document.getElementById('loginUser').value.trim();
-            var pass = document.getElementById('loginPass').value.trim();
-            var notifBox = document.getElementById('loginNotif');
-
-            if(user === "" || pass === "") {
-                notifBox.className = "notif-msg notif-gagal";
-                notifBox.innerHTML = "Username/Password tidak boleh kosong!";
-                notifBox.style.display = "block";
-                return;
-            }
-
-            var cleanUser = user.replace(/[.#$[\]]/g, "");
-
-            fetch(`${FIREBASE_URL}users/${cleanUser}.json`)
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.password === pass) {
-                    localStorage.setItem('monz_sedang_login', 'true');
-                    location.reload();
-                } else {
-                    notifBox.className = "notif-msg notif-gagal";
-                    notifBox.innerHTML = "Username atau Password salah!";
-                    notifBox.style.display = "block";
-                }
-            })
-            .catch(() => {
-                notifBox.className = "notif-msg notif-gagal";
-                notifBox.innerHTML = "Gagal menyambungkan ke server!";
-                notifBox.style.display = "block";
-            });
+        function showLogin() {
+            document.getElementById('main-view').style.display = 'none';
+            document.getElementById('login-view').style.display = 'block';
         }
 
-        function prosesLogout() {
-            localStorage.removeItem('monz_sedang_login');
-            location.reload();
-        }
+        function verifyPassword() {
+            const passwordBenar = "Monz V1"; 
+            const input = document.getElementById('password-input').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            const card = document.getElementById('card');
+            const loginView = document.getElementById('login-view');
+            const panelView = document.getElementById('panel-view');
+            const subtitle = document.getElementById('subtitle-text');
 
-        function pindahMenu(menuId, btnId) {
-            document.querySelectorAll('.isi-menu').forEach(el => el.classList.remove('muncul'));
-            document.getElementById(menuId).classList.add('muncul');
-            document.querySelectorAll('.nav-menu button').forEach(el => el.classList.remove('aktif'));
-            document.getElementById(btnId).classList.add('aktif');
+            if (input === passwordBenar) {
+                // Sembunyikan login, tampilkan panel
+                loginView.style.display = 'none';
+                panelView.style.display = 'block';
+                subtitle.innerText = "PANEL MONZ";
+                
+                // Ganti tema kartu
+                card.classList.remove('panel-main-active');
+                card.classList.add('panel-menu-active');
+            } else {
+                errorMsg.style.display = 'block';
+            }
         }
     </script>
 </body>
